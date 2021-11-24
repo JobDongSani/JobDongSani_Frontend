@@ -1,3 +1,6 @@
 export { default as Login} from './Login'
 export { default as Register} from './Register'
 export { default as Header } from './Header'
+export { default as Donation } from './Donation'
+export { default as Challenge } from './Challenge'
+export { default as ChallengeInfo } from './ChallengeInfo'
