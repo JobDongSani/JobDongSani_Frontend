@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import auth from '../../libs/api/auth';
 
 const Login = () => {
+  const navigate = useNavigate()
   const [ errorMessage, setErrorMessage ] = useState("")
   const [ loginInput, setLoginInput ] = useState({
     id: "",
@@ -18,7 +19,8 @@ const Login = () => {
     })
   }
 
-  const onLogin = () => {
+  const onLogin = (e: any) => {
+    e.preventDefault()
     if(!loginInput.id || !loginInput.password){
         setErrorMessage("빈칸을 모두 채워주세요")
     } else {
@@ -26,11 +28,15 @@ const Login = () => {
     }
     auth.postLogin(loginInput.id, loginInput.password)
     .then((res) => {
-      console.log(res.data.data.accessToken)
+      console.log(res.status)
       localStorage.setItem('access_token', res.data.data.accessToken)
+      navigate('/')
+      alert("로그인에 성공했습니다")
     })
     .catch((err)=> {
-      console.log(err)
+      if(err.response.status === 404){
+        alert("아이디 또는 비밀번호가 틀렸습니다")
+      }
     })
     setLoginInput({
       id: "",
@@ -70,7 +76,7 @@ const LoginWrapper = styled.div`
 `
 
 
-const LoginLeftBox = styled.div`
+const LoginLeftBox = styled.form`
   width: 400px;
   height: 300px;
   display: flex;
