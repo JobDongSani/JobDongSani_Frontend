@@ -3,15 +3,13 @@ import request from '../../axios'
 
 export default {
     postFile(file: FormData){
-        for(let i of file.values()){
-            console.log(i, "asd")
-        }
         return request({
             url: '/file',
             method: 'post',
-            data: {
-                file: file
-            }
+            headers : {
+                "Content-Type": "multipart/form-data"
+            },
+            data: file
         })
     }
 }
