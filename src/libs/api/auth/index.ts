@@ -14,5 +14,15 @@ export default {
                 userImage: profileUrl
             }
         })
+    },
+    postLogin(id: string, password: string){
+        return request({
+            url: '/signin',
+            method: 'post',
+            data: {
+                password: password,
+                username: id
+            }
+        })
     }
 }
