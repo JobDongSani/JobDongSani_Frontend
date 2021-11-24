@@ -1,28 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
 const Header = () => {
+    const [ token, setToken ] =useState<string|null>('')
     const navigate = useNavigate();
 
-  return (
-    <>
-        <HeaderWrapper>
-            <HeaderContent>
-                <LogoBox>
-                    <div>fhrh</div>
-                    <Title>잡동사니</Title>
-                </LogoBox>
-                
-                <ListBox>
-                    <List onClick={() => navigate('/donation')}>정크기부</List>
-                    <List onClick={() => navigate('/challenge')}>챌린지</List>
-                    <List onClick={() => navigate('/login')}>로그인</List>
-                </ListBox>
-            </HeaderContent>
-        </HeaderWrapper>
-    </>
-  );
+    useEffect(()=>{
+        setToken(localStorage.getItem('access-token'))
+    }, [])
+
+    return (
+        <>
+            <HeaderWrapper>
+                <HeaderContent>
+                    <LogoBox>
+                        <div>fhrh</div>
+                        <Title>잡동사니</Title>
+                    </LogoBox>
+                    
+                    <ListBox>
+                        <List onClick={() => navigate('/')}>정크기부</List>
+                        <List onClick={() => navigate('/challenge')}>챌린지</List>
+                        {
+                            !token ? <List onClick={() => navigate('/login')}>로그인</List>
+                            : <List onClick={() => {localStorage.removeItem('access-token'); navigate('/')}}>로그아웃</List>
+                        }
+                    </ListBox>
+                </HeaderContent>
+            </HeaderWrapper>
+        </>
+    );
 }
 
 export default Header;
