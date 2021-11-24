@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import auth from '../../libs/api/auth';
 
 const Login = () => {
   const [ errorMessage, setErrorMessage ] = useState("")
@@ -23,6 +24,18 @@ const Login = () => {
     } else {
         setErrorMessage("")
     }
+    auth.postLogin(loginInput.id, loginInput.password)
+    .then((res) => {
+      console.log(res.data.data.accessToken)
+      localStorage.setItem('access_token', res.data.data.accessToken)
+    })
+    .catch((err)=> {
+      console.log(err)
+    })
+    setLoginInput({
+      id: "",
+      password: ""
+    })
   }
 
   return (
