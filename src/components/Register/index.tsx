@@ -26,24 +26,13 @@ const Register = () => {let img = new FormData();
     const [ profileUrl, setProfileUrl ] = useState("")
     const [ imageUrl, setImageUrl ] = useState("");
     const [fileData, setFileData] = useState<any>();
+    const defaultImage = 'https://s3-projecflow-1.s3.amazonaws.com/images/60faa710-c21b-424b-a663-0407f905d413img.jpeg'
 
-    const onImage = async (e : any) => {
-        const file = e.target.files[0];
-        const options = {
-            maxSizeMB: 20, 
-  	        maxWidthOrHeight: 20000
-        }      
-        try {
-            const compressedFile = await imageCompression(file, options);
-            setFileData(compressedFile);
-            const promise = imageCompression.getDataUrlFromFile(compressedFile);
-            promise.then(result => {
-                setProfileUrl(result);
-            })
-        } catch (error) {
-            console.log(error);
-        }       
-    }
+    const onImage = (event: any) => {
+        setFileData(event.target.files[0]);
+        const imageUrl = URL.createObjectURL(event.target.files[0]);
+        setProfileUrl(imageUrl)
+    };
 
     const onRegisterInput = (e: any) => {
         const { value, name } = e.target;
@@ -74,14 +63,23 @@ const Register = () => {let img = new FormData();
             setErrorMessage("빈칸을 모두 채워주세요")
         } else {
             setErrorMessage("")
-        } if(errorMessage === ""){
-            const fd=new FormData();
-            console.log(fileData)
-            fileData && fd.append("file", fileData)
-            file.postFile(fd)
+        } 
+        if(!fileData){
+            auth.postRegister(registerInput.id, registerInput.name, registerInput.password, registerInput.cellphone, defaultImage)
             .then((res) => {
-                console.log(imageUrl)
-                auth.postRegister(registerInput.id, registerInput.name, registerInput.password, registerInput.cellphone, res.data.imageUrl)
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        } else{
+            const formData = new FormData();
+            formData.append("file", fileData, fileData.name);
+            
+            file.postFile(formData)
+            .then((res)=>{
+                console.log(res)
+                auth.postRegister(registerInput.id, registerInput.name, registerInput.password, registerInput.cellphone, res.data.data.fileUrl)
                 .then((res) => {
                     console.log(res.data)
                 })
@@ -89,7 +87,7 @@ const Register = () => {let img = new FormData();
                     console.log(err)
                 })
             })
-            .catch((err) => {
+            .catch((err)=>{
                 console.log(err)
             })
         }
@@ -100,14 +98,14 @@ const Register = () => {let img = new FormData();
     return (
         <>
             <RegisterWrapper>
-                <RegisterLeftBox>
+                <RegisterLeftBox encType="multipart/form-data">
                     <RegisterTitle>
                         <span>잡동사니</span>에 오신<br/>여러분을 환영합니다!
                     </RegisterTitle>
                     <input type="file"
-                        accept="image/jpeg, image/jpg" 
                         onChange={onImage}
                         id="file"
+                        accept="image/*"
                     />
                     <label htmlFor="file">
                     {
@@ -150,7 +148,7 @@ const RegisterWrapper = styled.div`
     transform: translateY(-50%);
 `
 
-const RegisterLeftBox = styled.div`
+const RegisterLeftBox = styled.form`
     width: 450px;
     height: 450px;
     display: flex;
