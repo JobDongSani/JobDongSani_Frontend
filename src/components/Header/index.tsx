@@ -1,7 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { useNavigate } from 'react-router';
 
 const Header = () => {
+    const navigate = useNavigate();
+
   return (
     <>
         <HeaderWrapper>
@@ -15,7 +18,7 @@ const Header = () => {
                     <List>잡동사니</List>
                     <List>잡동사니</List>
                     <List>잡동사니</List>
-                    <List>로그인</List>
+                    <List onClick={() => navigate('/login')}>로그인</List>
                 </ListBox>
             </HeaderContent>
         </HeaderWrapper>
