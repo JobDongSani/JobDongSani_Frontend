@@ -52,5 +52,38 @@ export default {
                 Authorization: `Bearer ${localStorage.getItem('access-token')}`
             }
         })
+    },
+    getComment(challengeId: number){
+        return request({
+            url: `/comment/${challengeId}`,
+            method: 'get',
+            headers : {
+                Authorization: `Bearer ${localStorage.getItem('access-token')}`
+            }
+        })
+    },
+    postComment(challengeId: number, title: string, startAt: string, endAt: string, imageUrl: string){
+        return request({
+            url: `/comment/${challengeId}`,
+            method: 'post',
+            headers : {
+                Authorization: `Bearer ${localStorage.getItem('access-token')}`
+            },
+            data : {
+                endDate: endAt,
+                imageUrl: imageUrl,
+                startDate: startAt,
+                title: title
+              }
+        })
+    },
+    putHeart(challengeId: number){
+        return request({
+            url: `/like/${challengeId}`,
+            method: 'put',
+            headers : {
+                Authorization: `Bearer ${localStorage.getItem('access-token')}`
+            }
+        })
     }
 }
