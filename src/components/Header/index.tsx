@@ -15,9 +15,8 @@ const Header = () => {
                 </LogoBox>
                 
                 <ListBox>
-                    <List>잡동사니</List>
-                    <List>잡동사니</List>
-                    <List>잡동사니</List>
+                    <List onClick={() => navigate('/donation')}>정크기부</List>
+                    <List onClick={() => navigate('/challenge')}>챌린지</List>
                     <List onClick={() => navigate('/login')}>로그인</List>
                 </ListBox>
             </HeaderContent>
