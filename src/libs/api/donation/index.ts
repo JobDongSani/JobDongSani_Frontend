@@ -11,4 +11,29 @@ export default {
             }
         })
     },
+    getDonationInfo(id: number){
+        return request({
+            url: `/trash-share-board/${id}`,
+            method: 'get',
+            headers : {
+                Authorization: `Bearer ${localStorage.getItem('access-token')}`
+            }
+        })
+    },
+    postDonation(title: string, content: string, contact: string, location: string, imageUrl: string){
+        return request({
+            url: '/trash-share-board',
+            method: 'post',
+            headers : {
+                Authorization: `Bearer ${localStorage.getItem('access-token')}`
+            },
+            data : {
+                title: title,
+                contents: content,
+                contact: contact,
+                location: location,
+                imagePath: imageUrl
+            }
+        })
+    }
 }
