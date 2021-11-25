@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import challenge from '../../libs/api/challenge';
+import CommentList from '../CommentList';
 
 interface IChallengeInfo {
     backgroundImage: string
@@ -16,9 +17,10 @@ interface IChallengeInfo {
 }
 
 const ChallengeInfo = () => {
+    const navigate = useNavigate()
     const { id } = useParams();
-    console.log(id)
     const [ isHeart, setIsHeart ] = useState(false)
+    const [ like, setLike ] = useState(0)
     const [ challengeData, setChallengeData ] = useState<any>()
     const image = 'https://s3-projecflow-1.s3.amazonaws.com/images/ace92c40-4ddf-4f6b-9e01-64aa5014f9c4afb0772d-9f57-11ea-8588-48df37269fd0_10.jpg'
     const profile = 'https://s3-projecflow-1.s3.amazonaws.com/images/b7290263-31ba-437a-b382-5628cad0dc92Lovepik_com-400752395-vs-war.png'
@@ -28,11 +30,25 @@ const ChallengeInfo = () => {
         .then((res) => {
             setChallengeData(res.data.data)
             setIsHeart(res.data.data.isLike)
+            setLike(res.data.data.likeCount)
         })
         .catch((err) => {
             console.log(err)
         })
     },[id])
+
+    const onHeartClick = () => {
+        console.log('asd')
+        challenge.putHeart(Number(id))
+        .then((res) => {
+            console.log(res)
+            !isHeart ? setLike(like+1) : setLike(like-1)
+            setIsHeart(!isHeart)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
   return (
     <>
@@ -53,7 +69,7 @@ const ChallengeInfo = () => {
                     <ChallengeType>작성자</ChallengeType>
                     <ChallengeContent>
                         <img src={challengeData.profileImage} alt="사진" />
-                        <div>한준호</div>
+                        <div>{challengeData.name}</div>
                     </ChallengeContent>
                 </ChallengeRow>
                 <ChallengeRow>
@@ -82,22 +98,23 @@ const ChallengeInfo = () => {
                 </ChallengeRow>
                 <ChallengeRow>
                     <ChallengeType>
-                        <div onClick={()=>setIsHeart(!isHeart)} style={{cursor: "pointer"}}>
+                        <div onClick={onHeartClick} style={{cursor: "pointer"}}>
                             {
                                 isHeart ? 
                                     <AiFillHeart />
                                 : <AiOutlineHeart />
                             }
                         </div>
-                        <div>{challengeData.likeCount}</div>
+                        <div>{like}</div>
                     </ChallengeType>
                     <ChallengeContent>
-                        <button>결과 공유 하기</button>
+                        <button onClick={() => navigate(`/cardAdd/comment-post/${id}`)}>결과 공유 하기</button>
                     </ChallengeContent>
                 </ChallengeRow>
             </ChallengeInfoBox>
         </ChallengeInfoWrapper>  
     }
+        <CommentList id={Number(id)}/>
     </>
   );
 }
@@ -111,14 +128,13 @@ const ChallengeInfoWrapper = styled.div`
 `
 
 const ChallengeImage = styled.div`
-    width: 750px;
     height: 550px;
     box-sizing: border-box;
     margin: 25px;
     img{
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
     }
 `
 
