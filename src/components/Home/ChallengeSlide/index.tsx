@@ -89,7 +89,7 @@ const StyledSlider = styled(Slider)`
     }
     .slick-slide div{
         width: 160px;
-      outline: none; // 슬라이드 클릭시 파란선을 제거하기 위해서 작성
+        outline: none; // 슬라이드 클릭시 파란선을 제거하기 위해서 작성
     }
     .slick-active{
         display: flex;
