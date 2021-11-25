@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
-import { Login, Register, Header, Donation, Challenge,ChallengeInfo } from '../components';
+import { Login, Register, Header, Donation, Challenge, ChallengeInfo, Home, ClubAdd } from '../components';
 
 const MainRouter = () => {
   return (
@@ -9,11 +9,14 @@ const MainRouter = () => {
         <BrowserRouter>
             <Header />
             <Routes>
+                <Route path="/" element={<Home />}/>
                 <Route path='/login' element={<Login/>}/>
                 <Route path='/register' element={<Register/>}/>
                 <Route path='/donation' element={<Donation/>}/>
                 <Route path='/challenge' element={<Challenge/>}/>
                 <Route path='/challenge/:id' element={<ChallengeInfo/>}/>
+                <Route path='/cardAdd/:type' element={<ClubAdd/>}/>
+                <Route path='/cardAdd/:type/:id' element={<ClubAdd/>}/>
             </Routes>
         </BrowserRouter>
     </>
