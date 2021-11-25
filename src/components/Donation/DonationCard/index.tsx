@@ -1,24 +1,37 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from '@emotion/styled'
+import { useNavigate } from 'react-router';
 
-const DonationCard = () => {
+interface Props {
+    id: number,
+    title: string,
+    contents: string,
+    contact: string,
+    imagePath: string,
+    writer: string
+}
+
+const DonationCard: FC<Props> = ({id, title, contents, contact, imagePath, writer}) => {
+    const navigate = useNavigate()
     const image = 'https://s3-projecflow-1.s3.amazonaws.com/images/ace92c40-4ddf-4f6b-9e01-64aa5014f9c4afb0772d-9f57-11ea-8588-48df37269fd0_10.jpg'
-    const profile = 'https://s3-projecflow-1.s3.amazonaws.com/images/b7290263-31ba-437a-b382-5628cad0dc92Lovepik_com-400752395-vs-war.png'
+    const defaultImage = 'https://s3-projecflow-1.s3.amazonaws.com/images/60faa710-c21b-424b-a663-0407f905d413img.jpeg'
 
 
   return (
     <>
-        <DonationCardWrapper>
-            <img src={image} alt="이미지" />
-            <CardTitle>정크아티스트에게 패트병 기부합니다!!</CardTitle>
+        <DonationCardWrapper >
+            <img src={imagePath} alt="이미지" />
+            <CardTitle>{title}</CardTitle>
             <CardDescription>
-                원래 사용하려고 샀다가 필요가 없어져서 팔게 됬습니다.상태는 상이고요 물품 하자 있을시 감가 해드립니다.
-                원래 사용하려고 샀다가 필요가 없어져서 팔게 됬습니다.상태는 상이고요 물품 하자 있을시 감가 해드립니다.
+                {contents}
             </CardDescription>
             <ProfileBox>
-                <img src={profile} alt="이미지"/>
-                <div>한준호</div>
+                <img src={defaultImage} alt="이미지"/>
+                <div>{writer}</div>
             </ProfileBox>
+            <ContactBox>
+                연락처 : {contact}
+            </ContactBox>
         </DonationCardWrapper>
     </>
   );
@@ -37,6 +50,7 @@ const DonationCardWrapper = styled.div`
         width: 300px;
         height: 200px;
         border-radius: 10px;
+        object-fit: cover;
     }
 `
 
@@ -72,4 +86,17 @@ const ProfileBox = styled.div`
         margin-left: 5px;
         font-size: 16px;
     }
+`
+
+const ContactBox = styled.div`
+    display: flex;
+    padding: 5px;
+    align-items: center;
+    z-index: 99;
+    svg {
+        margin-left: 5px;
+        width: 23px;
+        height: 23px;
+    }
+
 `
