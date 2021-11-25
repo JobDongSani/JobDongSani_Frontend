@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import styled from '@emotion/styled'
 import { useNavigate } from 'react-router';
+import Loading from '../../../libs/style/Loading';
 
 interface Props {
     id: number,
@@ -19,7 +20,7 @@ const DonationCard: FC<Props> = ({id, title, contents, contact, imagePath, write
 
   return (
     <>
-        <DonationCardWrapper >
+        <DonationCardWrapper onClick={() => navigate(`/donation/${id}`)}>
             <img src={imagePath} alt="이미지" />
             <CardTitle>{title}</CardTitle>
             <CardDescription>
