@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import {imageAdd} from '../../assets'
 import challenge from '../../libs/api/challenge';
+import donation from '../../libs/api/donation';
 import file from '../../libs/api/file';
 
 const CardAdd = () => {
     const navigate = useNavigate()
     const { type, id } = useParams()
-    console.log(type, id)
     const [fileData, setFileData] = useState<any>();
     const [title, setTitle] = useState('');
     const [ profileUrl, setProfileUrl ] = useState("")
@@ -72,7 +72,23 @@ const CardAdd = () => {
     }
 
     const DoationPost = (imageUrl: string) => {
-        
+        donation.postDonation(inputData.title, inputData.content, inputData.contact, inputData.address, imageUrl)
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
+
+    const CommentPost = (imageUrl: string) => {
+        challenge.postComment(Number(id), inputData.title, inputData.startDate, inputData.endDate, imageUrl, inputData.content)
+        .then((res) => {
+            console.log(res)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     const onSendData = () => {
@@ -82,8 +98,8 @@ const CardAdd = () => {
         file.postFile(formData)
         .then((res)=>{
             type === 'challenge-post' && ChallengePost(res.data.data.fileUrl)
-            type === 'donation-post' && ChallengePost(res.data.data.fileUrl)
-            type === 'comment-post' && ChallengePost(res.data.data.fileUrl)
+            type === 'donation-post' && DoationPost(res.data.data.fileUrl)
+            type === 'comment-post' && CommentPost(res.data.data.fileUrl)
         })
         .catch((err)=>{
             console.log(err)
@@ -111,8 +127,8 @@ const CardAdd = () => {
                     <InputBox>
                         <CardAddInput name="title" placeholder="제목" onChange={onInputChange} value={inputData.title}/>
                         {
-                            type !== 'donation-post' &&
-                            <CardAddInput name="introduce"  placeholder="한 줄 소개(최대 25자)" maxLength={25} onChange={onInputChange} value={inputData.introduce}/>
+                            type === 'challenge-post' &&
+                            <CardAddInput name="introduce"  placeholder="한 줄 소개(최대 25자)" maxLength={30} onChange={onInputChange} value={inputData.introduce}/>
                         }
                         <CardAddInputArea name="content"  placeholder="내용" cols={30} onChange={onInputChange} value={inputData.content}/>
                         {
