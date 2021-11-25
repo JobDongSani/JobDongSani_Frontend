@@ -36,7 +36,7 @@ export default Header;
 
 const HeaderWrapper = styled.div`
     width: 100%;
-    height: 45px;
+    height: 66px;
     position: sticky;
     border-bottom: 1px solid black;
     display: flex;
@@ -75,7 +75,7 @@ const ListBox = styled.ul`
 
 const List = styled.li`
     width: 100px;
-    height: 45px;
+    height: 66px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,9 +85,9 @@ const List = styled.li`
     position: relative;
     ::before, ::after{
         content: '';
-        border-bottom: solid 2px #7190FF;
+        border-top: solid 2px #7190FF;
         position: absolute;
-        bottom: 0;
+        top: 0;
         width: 0;
         -webkit-transition: all 0.2s ease;
             transition: all 0.22s ease;
