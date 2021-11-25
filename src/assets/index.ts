@@ -1,0 +1,1 @@
+export { default as imageAdd } from './imageAdd.svg'
