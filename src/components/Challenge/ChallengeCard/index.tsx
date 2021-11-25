@@ -21,21 +21,8 @@ interface Props {
 
 const ChallengeCard: FC<Props> = ({content, endDate, id, memberCount, name, profileImage, startDate, title, username, likeCount, backgroundImage, isLike }) => {
     const navigate = useNavigate()
-    const [ isHeart, setIsHeart ] = useState(isLike)
     const image = 'https://s3-projecflow-1.s3.amazonaws.com/images/ace92c40-4ddf-4f6b-9e01-64aa5014f9c4afb0772d-9f57-11ea-8588-48df37269fd0_10.jpg'
     const defaultImage = 'https://s3-projecflow-1.s3.amazonaws.com/images/60faa710-c21b-424b-a663-0407f905d413img.jpeg'
-
-    const onHeartClick = () => {
-        challenge.putHeart(id)
-        .then((res) => {
-            console.log(res.data.data)
-            setIsHeart(!isHeart)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
-    }
-
 
   return (
     <>
@@ -52,7 +39,7 @@ const ChallengeCard: FC<Props> = ({content, endDate, id, memberCount, name, prof
                 </ProfileBox>
                 <HeartBox>
                     <div>{likeCount}명</div>
-                    <div onClick={onHeartClick}>
+                    <div>
                         {
                             isLike ? <AiFillHeart /> : <AiOutlineHeart />
                         }
@@ -74,7 +61,7 @@ const ChallengeCardWrapper = styled.div`
     border-radius: 10px;
     cursor: pointer;
     img{
-        width: 300px;
+        width: 100%;
         height: 200px;
         border-radius: 10px;
         object-fit: cover;
