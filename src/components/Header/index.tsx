@@ -15,12 +15,11 @@ const Header = () => {
             <HeaderWrapper>
                 <HeaderContent>
                     <LogoBox>
-                        <div>fhrh</div>
-                        <Title>잡동사니</Title>
+                        <Title onClick={() => navigate('/')}>잡동사니</Title>
                     </LogoBox>
                     
                     <ListBox>
-                        <List onClick={() => navigate('/')}>정크기부</List>
+                        <List onClick={() => navigate('/donation')}>정크기부</List>
                         <List onClick={() => navigate('/challenge')}>챌린지</List>
                         {
                             !token ? <List onClick={() => navigate('/login')}>로그인</List>
@@ -60,6 +59,7 @@ const LogoBox = styled.div`
 `
 
 const Title = styled.div`
+    cursor: pointer;
     font-size: 20px;
     font-weight: bold;
     color: #7190FF;
