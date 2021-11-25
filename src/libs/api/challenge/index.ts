@@ -65,7 +65,7 @@ export default {
             }
         })
     },
-    postComment(challengeId: number, title: string, startAt: string, endAt: string, imageUrl: string){
+    postComment(challengeId: number, title: string, startAt: string, endAt: string, imageUrl: string, content: string){
         return request({
             url: `/comment/${challengeId}`,
             method: 'post',
@@ -76,7 +76,8 @@ export default {
                 endDate: endAt,
                 imageUrl: imageUrl,
                 startDate: startAt,
-                title: title
+                title: title,
+                content: content,
               }
         })
     },
