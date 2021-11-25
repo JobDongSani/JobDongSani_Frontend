@@ -2,7 +2,8 @@
 import request from '../../axios'
 
 export default {
-    postChallenge(title: string, startAt: string, endAt: string, content: string){
+    postChallenge(title: string, startAt: string, endAt: string, content: string, introduce: string, imageUrl: string){
+        console.log(title, startAt, endAt, content, imageUrl, introduce)
         return request({
             url: '/challenge',
             method: 'post',
@@ -11,9 +12,11 @@ export default {
             },
             data: {
                 title: title,
-                startAt: startAt,
-                endAt: endAt,
-                content: content
+                startDate: startAt,
+                endDate: endAt,
+                content: content,
+                introduce: introduce,
+                imageUrl: imageUrl
             }
         })
     },
@@ -26,18 +29,18 @@ export default {
             }
         })
     },
-    getChallengeList(page: number){
+    getChallengeList(page: number, type: string = 'NEW'){
         return request({
-            url: `/challenge?size=10&page=${page}`,
+            url: `/challenge?size=10&page=${page}&type=${type}`,
             method: 'get',
             headers : {
                 Authorization: `Bearer ${localStorage.getItem('access-token')}`
             }
         })
     },
-    getChallengeSearch(page: number){
+    getChallengeSearch(title: string, page: number, type: string = 'NEW'){
         return request({
-            url: `/challenge/filter?size=10&page=${page}`,
+            url: `/challenge/filter?size=10&page=${page}&title=${title}&type=${type}`,
             method: 'get',
             headers : {
                 Authorization: `Bearer ${localStorage.getItem('access-token')}`
