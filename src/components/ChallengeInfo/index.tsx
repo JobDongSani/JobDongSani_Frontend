@@ -1,42 +1,83 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useParams } from 'react-router';
+import challenge from '../../libs/api/challenge';
+
+interface IChallengeInfo {
+    backgroundImage: string
+    content: string
+    endDate: string
+    isLike: boolean
+    likeCount: number
+    memberCount: number
+    startDate: string
+    title: string
+}
 
 const ChallengeInfo = () => {
+    const { id } = useParams();
+    console.log(id)
     const [ isHeart, setIsHeart ] = useState(false)
+    const [ challengeData, setChallengeData ] = useState<any>()
     const image = 'https://s3-projecflow-1.s3.amazonaws.com/images/ace92c40-4ddf-4f6b-9e01-64aa5014f9c4afb0772d-9f57-11ea-8588-48df37269fd0_10.jpg'
     const profile = 'https://s3-projecflow-1.s3.amazonaws.com/images/b7290263-31ba-437a-b382-5628cad0dc92Lovepik_com-400752395-vs-war.png'
 
+    useEffect(()=> {
+        challenge.getChallengeInfo(Number(id))
+        .then((res) => {
+            setChallengeData(res.data.data)
+            setIsHeart(res.data.data.isLike)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    },[id])
+
   return (
     <>
+    {
+        challengeData && 
         <ChallengeInfoWrapper>
             <ChallengeImage>
-                <img src={image} alt="이미지"/>
+                <img src={challengeData.backgroundImage} alt="이미지"/>
             </ChallengeImage>
             <ChallengeInfoBox>
                 <ChallengeRow>
+                    <ChallengeType>제목</ChallengeType>
+                    <ChallengeContent>
+                        <div>{challengeData.title}</div>
+                    </ChallengeContent>
+                </ChallengeRow>
+                <ChallengeRow>
                     <ChallengeType>작성자</ChallengeType>
                     <ChallengeContent>
-                        <img src={profile} alt="사진" />
+                        <img src={challengeData.profileImage} alt="사진" />
                         <div>한준호</div>
                     </ChallengeContent>
                 </ChallengeRow>
                 <ChallengeRow>
                     <ChallengeType>내용</ChallengeType>
                     <ChallengeContent>
-                        <div> aajsiodjaiosdjaiosd aajsiodjaiosdjaiosdjaoisjdoaisjdo aajsiodjaiosdjaiosd aajsiodjaiosdjaiosd aajsiodjaiosdjaiosdjaoisjdoaisjdo aajsiodjaiosdjaiosd aajsiodjaiosdjaiosd aajsiodjaiosdjaiosdjaoisjdoaisjdo aajsiodjaiosdjaiosd aajsiodjaiosdjaiosd aajsiodjaiosdjaiosdjaoisjdoaisjdo siodjaiosdjaiosd aajsiodjaiosdjaiosd aajsiodjaiosdjaiosdjaoisjdoaisjdo isjdoaisjdoias jdoais jaoisjdao sidjaoisdjaoisdjoa isjdaoisdjaoisdj</div>
+                        <div>{challengeData.content}</div>
                     </ChallengeContent>
                 </ChallengeRow>
                 <ChallengeRow>
                     <ChallengeType>시작일</ChallengeType>
                     <ChallengeContent>
-                        <div>2021-12-01</div>
+                        <div>{challengeData.startDate}</div>
                     </ChallengeContent>
                 </ChallengeRow>
                 <ChallengeRow>
                     <ChallengeType>종료일</ChallengeType>
                     <ChallengeContent>
-                        <div>2021-12-31</div>
+                        <div>{challengeData.endDate}</div>
+                    </ChallengeContent>
+                </ChallengeRow>
+                <ChallengeRow>
+                    <ChallengeType>참여자수</ChallengeType>
+                    <ChallengeContent>
+                        <div>{challengeData.memberCount}</div>
                     </ChallengeContent>
                 </ChallengeRow>
                 <ChallengeRow>
@@ -48,7 +89,7 @@ const ChallengeInfo = () => {
                                 : <AiOutlineHeart />
                             }
                         </div>
-                        <div>1</div>
+                        <div>{challengeData.likeCount}</div>
                     </ChallengeType>
                     <ChallengeContent>
                         <button>결과 공유 하기</button>
@@ -56,6 +97,7 @@ const ChallengeInfo = () => {
                 </ChallengeRow>
             </ChallengeInfoBox>
         </ChallengeInfoWrapper>  
+    }
     </>
   );
 }
@@ -76,6 +118,7 @@ const ChallengeImage = styled.div`
     img{
         width: 100%;
         height: 100%;
+        object-fit: cover;
     }
 `
 
@@ -119,10 +162,11 @@ const ChallengeContent = styled.div`
     align-items: center;
     white-space: pre-wrap;
     div{
-        max-height: 273px;
+        max-height: 155px;
         overflow: auto;
     }
     img{
+        border-radius: 50%;
         margin-right: 5px;
         width: 23px;
         height: 23px;
