@@ -3,8 +3,7 @@ import styled from '@emotion/styled';
 import { AiOutlinePlus } from 'react-icons/ai'
 import file from '../../libs/api/file';
 import auth from '../../libs/api/auth';
-import imageCompression from 'browser-image-compression';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface IRegister {
     name: string,
@@ -14,7 +13,8 @@ interface IRegister {
     cellphone: number | string
 }
 
-const Register = () => {let img = new FormData();
+const Register = () => {
+    const navigate = useNavigate()
     const [ registerInput, setRegisterInput ] = useState<IRegister>({
         name: "",
         id: "",
@@ -82,6 +82,8 @@ const Register = () => {let img = new FormData();
                 auth.postRegister(registerInput.id, registerInput.name, registerInput.password, registerInput.cellphone, res.data.data.fileUrl)
                 .then((res) => {
                     console.log(res.data)
+                    alert('회원가입에 성공했습니다')
+                    navigate('/login')
                 })
                 .catch((err) => {
                     console.log(err)
