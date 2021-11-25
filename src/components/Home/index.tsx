@@ -1,10 +1,12 @@
 import React from 'react';
 import ChallengeSlide from './ChallengeSlide'
+import Slide from './Slide';
 
 const Home = () => {
   return (
     <>
-        <ChallengeSlide />
+      <Slide />  
+      <ChallengeSlide />
     </>
   );
 }
