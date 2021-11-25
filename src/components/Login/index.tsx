@@ -29,7 +29,7 @@ const Login = () => {
     auth.postLogin(loginInput.id, loginInput.password)
     .then((res) => {
       console.log(res.status)
-      localStorage.setItem('access_token', res.data.data.accessToken)
+      localStorage.setItem('access-token', res.data.data.accessToken)
       navigate('/')
       alert("로그인에 성공했습니다")
     })
